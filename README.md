@@ -24,14 +24,19 @@ src/
     ├── service/
     │   ├── Servico.java
     │   ├── Banho.java
-    │   └── Tosa.java
+    │   ├── Tosa.java
+    │   └── TosaHigienica.java
     ├── factory/
     │   ├── ServicoFactory.java
     │   ├── BanhoFactory.java
-    │   └── TosaFactory.java
+    │   ├── TosaFactory.java
+    │   └── TosaHigienicaFactory.java
     └── decorator/
         ├── AdicionalDecorator.java
-        └── HidratacaoDecorator.java
+        ├── HidratacaoDecorator.java
+        ├── CorteUnhasDecorator.java
+        ├── PerfumeDecorator.java
+        └── EscovacaoDentesDecorator.java
 ```
 
 ## Instruções de execução
@@ -84,17 +89,17 @@ Agendamento {
 - **Problema resolvido:** desacopla a criação dos serviços concretos do restante da aplicação. Em vez de concentrar a instanciação em condicionais (`if/switch`), cada serviço possui sua própria fábrica. Para adicionar um novo serviço (como previsto na Parte 2), basta criar a nova classe que implementa `Servico` e sua respectiva subclasse de `ServicoFactory`, sem modificar o código existente.
 - **Classes envolvidas:**
   - `Servico` (Product)
-  - `Banho`, `Tosa` (ConcreteProducts)
+  - `Banho`, `Tosa`, `TosaHigienica` (ConcreteProducts)
   - `ServicoFactory` (Creator)
-  - `BanhoFactory`, `TosaFactory` (ConcreteCreators)
+  - `BanhoFactory`, `TosaFactory`, `TosaHigienicaFactory` (ConcreteCreators)
 
 ### 2. Decorator
 - **Problema resolvido:** permite adicionar serviços extras (adicionais) dinamicamente a qualquer serviço base sem precisar criar combinações de subclasses (como `BanhoComHidratacao`, `TosaComHidratacaoECorteDeUnhas`, etc.). Cada adicional envolve um `Servico`, acumula o preço e concatena sua descrição. Para adicionar um novo adicional na Parte 2, basta estender `AdicionalDecorator`.
 - **Classes envolvidas:**
   - `Servico` (Component)
-  - `Banho`, `Tosa` (ConcreteComponents)
+  - `Banho`, `Tosa`, `TosaHigienica` (ConcreteComponents)
   - `AdicionalDecorator` (Decorator)
-  - `HidratacaoDecorator` (ConcreteDecorator)
+  - `HidratacaoDecorator`, `CorteUnhasDecorator`, `PerfumeDecorator`, `EscovacaoDentesDecorator` (ConcreteDecorators)
 
 ## Declaração de uso de IA
 
@@ -110,7 +115,7 @@ Agendamento {
 - Implementação da base do padrão **Decorator**: `AdicionalDecorator` e `HidratacaoDecorator`;
 - Fluxo inicial de ponta a ponta em `Main.java` validando a integração entre entidades e os dois patterns.
 
-### Integrante 2 - `` (Expansão de adicionais e serviço complementar)
+### Integrante 2 - `Guilherme Cesarino (@GuilhermeCesarino)` (Expansão de adicionais e serviço complementar)
 - Implementar novos adicionais concretos estendendo `AdicionalDecorator` (ex.: `CorteUnhasDecorator`, `PerfumeDecorator` ou `EscovacaoDentesDecorator`);
 - Implementar mais um serviço concreto e sua factory (ex.: `TosaHigienica` e `TosaHigienicaFactory`);
 - Atualizar a lista de classes envolvidas no `README.md`.
