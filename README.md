@@ -208,38 +208,27 @@ A utilização de IA ocorreu como ferramenta de apoio ao desenvolvimento, com re
 
 ## Divisão do projeto e contribuição de cada integrante
 
-### Integrante 1 - `Gabriel Tomé (@GabrielTME)` (Base do projeto e núcleo dos patterns)
+### Gabriel Tomé ([@GabrielTME](https://github.com/GabrielTME)) — Arquitetura base, entidades e núcleo dos patterns
 
-- Estrutura inicial do repositório (`.gitignore`, organização de pacotes e `README.md` inicial).
-- Entidades principais: `Tutor`, `Pet` e `Agendamento`.
-- Implementação do padrão **Factory Method**: `Servico`, `Banho`, `Tosa`, `ServicoFactory`, `BanhoFactory` e `TosaFactory`.
-- Implementação da base do padrão **Decorator**: `AdicionalDecorator` e `HidratacaoDecorator`.
-- Fluxo inicial de integração entre entidades e os dois padrões em `Main.java`.
+- Estruturação inicial do repositório (`.gitignore`, organização dos pacotes `model`, `service`, `factory` e `decorator`, e versão inicial do `README.md`).
+- Modelagem e implementação das entidades principais do domínio: `Tutor`, `Pet` e `Agendamento` (incluindo cálculo do valor total e formatação do comprovante).
+- Implementação do núcleo do padrão **Factory Method**: interface `Servico`, produtos concretos `Banho` e `Tosa`, creator abstrato `ServicoFactory` e fábricas `BanhoFactory` e `TosaFactory`.
+- Implementação da base do padrão **Decorator**: classe abstrata `AdicionalDecorator` para composição dinâmica de serviços e o primeiro decorator concreto `HidratacaoDecorator`.
+- Criação do fluxo inicial ponta a ponta em `Main.java`, integrando as entidades com **Factory Method** e **Decorator**.
 
-### Integrante 2 - `Guilherme Cesarino (@GuilhermeCesarino)` (Expansão de adicionais e serviço complementar)
+### Guilherme Cesarino ([@GuilhermeCesarino](https://github.com/GuilhermeCesarino)) — Expansão de adicionais e serviço complementar
 
 - Implementação de novos adicionais concretos estendendo `AdicionalDecorator`: `CorteUnhasDecorator`, `PerfumeDecorator` e `EscovacaoDentesDecorator`.
 - Implementação do serviço `TosaHigienica` e sua respectiva factory.
 - Expansão das possibilidades de composição dos serviços utilizando Decorator.
 - Atualização da documentação das classes e dos padrões utilizados.
 
-### Integrante 3 -`Elison Miller (@elison4)` (Menu interativo no console e gestão em memória)
+### Elison Miller ([@elison4](https://github.com/elison4)) — Menu interativo, validações, testes e documentação
 
-- Evolução do fluxo em `Main.java` com menu interativo via `Scanner`.
-- Criação e gerenciamento das listas em memória de tutores, pets e agendamentos.
-- Implementação do cadastro de tutores e pets.
-- Implementação da criação de agendamentos com escolha de serviços via Factory Method.
-- Integração dos adicionais via Decorator, permitindo múltiplos adicionais em um mesmo serviço.
-- Implementação da listagem de agendamentos e cadastros.
-
-### Integrante 4 - `Elison Miller (@elison4)` (Validações, testes e documentação)
-
-- Implementação de validações nos cadastros e agendamentos.
-- Validação de campos obrigatórios, telefone e data/horário.
-- Verificação de conflitos de agendamento para o mesmo pet, na mesma data e horário.
-- Realização de testes manuais dos fluxos do sistema.
-- Conferência dos cálculos de preços e das descrições com múltiplos decorators.
-- Revisão e finalização do `README.md`.
+- Evolução do `Main.java` com menu interativo no console (`Scanner`), gerenciamento em memória das listas de tutores, pets e agendamentos e exibição das listagens.
+- Integração no fluxo interativo da criação de serviços via **Factory Method** e da aplicação de múltiplos adicionais via **Decorator**.
+- Implementação das validações de entrada (campos obrigatórios, telefone, data/horário futuros, adicionais duplicados e conflito de horário para o mesmo pet).
+- Execução de testes manuais dos fluxos, conferência dos cálculos de preços e revisão final do `README.md`.
 
 ---
 
