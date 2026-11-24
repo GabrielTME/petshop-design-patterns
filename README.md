@@ -45,8 +45,23 @@ src/
         └── EscovacaoDentesDecorator.java
 ```
 
-## Instruções de execução
 
+
+## Como obter o projeto
+
+Antes de executar, é necessário ter o Git instalado e clonar o repositório:
+
+```bash
+git clone https://github.com/GabrielTME/petshop-design-patterns.git
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd petshop-design-patterns
+```
+
+## Instruções de execução
 No terminal, a partir da raiz do repositório:
 
 ### 1. Compilar
