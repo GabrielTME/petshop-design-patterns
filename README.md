@@ -208,7 +208,7 @@ A utilização de IA ocorreu como ferramenta de apoio ao desenvolvimento, com re
 
 ## Divisão do projeto e contribuição de cada integrante
 
-### Gabriel Tomé ([@GabrielTME](https://github.com/GabrielTME)) — Arquitetura base, entidades e núcleo dos patterns
+### Gabriel Tomé ([@GabrielTME](https://github.com/GabrielTME)) - Arquitetura base, entidades e núcleo dos patterns
 
 - Estruturação inicial do repositório (`.gitignore`, organização dos pacotes `model`, `service`, `factory` e `decorator`, e versão inicial do `README.md`).
 - Modelagem e implementação das entidades principais do domínio: `Tutor`, `Pet` e `Agendamento` (incluindo cálculo do valor total e formatação do comprovante).
@@ -216,14 +216,14 @@ A utilização de IA ocorreu como ferramenta de apoio ao desenvolvimento, com re
 - Implementação da base do padrão **Decorator**: classe abstrata `AdicionalDecorator` para composição dinâmica de serviços e o primeiro decorator concreto `HidratacaoDecorator`.
 - Criação do fluxo inicial ponta a ponta em `Main.java`, integrando as entidades com **Factory Method** e **Decorator**.
 
-### Guilherme Cesarino ([@GuilhermeCesarino](https://github.com/GuilhermeCesarino)) — Expansão de adicionais e serviço complementar
+### Guilherme Cesarino ([@GuilhermeCesarino](https://github.com/GuilhermeCesarino)) - Expansão de adicionais e serviço complementar
 
 - Implementação de novos adicionais concretos estendendo `AdicionalDecorator`: `CorteUnhasDecorator`, `PerfumeDecorator` e `EscovacaoDentesDecorator`.
 - Implementação do serviço `TosaHigienica` e sua respectiva factory.
 - Expansão das possibilidades de composição dos serviços utilizando Decorator.
 - Atualização da documentação das classes e dos padrões utilizados.
 
-### Elison Miller ([@elison4](https://github.com/elison4)) — Menu interativo, validações, testes e documentação
+### Elison Miller ([@elison4](https://github.com/elison4)) - Menu interativo, validações, testes e documentação
 
 - Evolução do `Main.java` com menu interativo no console (`Scanner`), gerenciamento em memória das listas de tutores, pets e agendamentos e exibição das listagens.
 - Integração no fluxo interativo da criação de serviços via **Factory Method** e da aplicação de múltiplos adicionais via **Decorator**.
