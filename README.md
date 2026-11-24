@@ -1,15 +1,21 @@
 # Pet Shop - Sistema de Agendamentos (Design Patterns)
 
-Projeto desenvolvido para a disciplina de **Design Patterns**, implementando o **Tema 4 (Pet shop)** em Java puro com os padrões **Factory Method** e **Decorator**.
+Projeto desenvolvido para a disciplina de **Design Patterns**, implementando o **Tema 4 (Pet Shop)** em Java puro, utilizando os padrões de projeto **Factory Method** e **Decorator**.
 
 ## Descrição do sistema
 
-Aplicação de console em Java para gerenciamento simples de agendamentos de serviços em um pet shop, sem uso de banco de dados. O sistema trabalha com três entidades principais (`Tutor`, `Pet` e `Agendamento`) e permite criar serviços base (como Banho e Tosa) e compor adicionais opcionais (como Hidratação) de forma flexível.
+Aplicação de console em Java para gerenciamento de agendamentos de serviços em um pet shop, sem utilização de banco de dados.
+
+O sistema permite cadastrar tutores e seus respectivos pets, criar agendamentos, selecionar serviços e adicionar serviços extras de forma dinâmica.
+
+As informações são armazenadas em memória durante a execução. Portanto, os dados são perdidos quando a aplicação é encerrada.
 
 ## Tecnologias e pré-requisitos
 
 - **Java (JDK 11 ou superior)**
-- Sem dependências externas e sem banco de dados (tudo em memória)
+- Sem dependências externas.
+- Sem banco de dados: armazenamento em memória utilizando coleções Java.
+- Interface interativa executada pelo terminal.
 
 ## Estrutura do projeto
 
@@ -43,27 +49,83 @@ src/
 
 No terminal, a partir da raiz do repositório:
 
-### Compilar
+### 1. Compilar
 
 **Windows (PowerShell):**
+
 ```powershell
 javac -encoding UTF-8 -d out src/petshop/model/*.java src/petshop/service/*.java src/petshop/factory/*.java src/petshop/decorator/*.java src/petshop/Main.java
 ```
 
 **Linux / macOS:**
+
 ```bash
 javac -encoding UTF-8 -d out src/petshop/model/*.java src/petshop/service/*.java src/petshop/factory/*.java src/petshop/decorator/*.java src/petshop/Main.java
 ```
 
-### Executar
+### 2. Executar
 
 ```bash
 java -cp out petshop.Main
 ```
 
-## Exemplos de uso
+## Funcionalidades do sistema
 
-Ao executar `petshop.Main`, o sistema cria um tutor, um pet e dois agendamentos (um com Banho + Hidratação e outro apenas com Tosa), exibindo a saída no console:
+Ao executar a aplicação, é apresentado um menu interativo com as seguintes opções:
+
+1. **Cadastrar tutor:** registra o nome e o telefone do tutor, com validação dos campos.
+2. **Cadastrar pet:** registra nome, espécie e raça, vinculando o pet a um tutor já cadastrado.
+3. **Criar agendamento:** permite selecionar um pet, escolher um serviço base, adicionar serviços extras e informar a data e o horário.
+4. **Listar agendamentos:** exibe os agendamentos cadastrados, incluindo tutor, pet, serviço, data, horário e valor total.
+5. **Listar tutores e pets:** apresenta os cadastros realizados durante a execução.
+6. **Sair:** encerra a aplicação.
+
+### Validações implementadas
+
+- Impede o cadastro de campos obrigatórios vazios.
+- Valida o formato do telefone do tutor, considerando números com 10 ou 11 dígitos.
+- Exige que exista um tutor cadastrado para realizar o cadastro de um pet.
+- Impede a seleção de opções inválidas no menu.
+- Valida o formato da data e do horário.
+- Não permite agendamentos em datas ou horários anteriores ao momento atual.
+- Impede que o mesmo pet tenha dois agendamentos com a mesma data e horário informados.
+- Impede a seleção repetida do mesmo adicional em um único agendamento.
+
+## Serviços e valores
+
+### Serviços base
+
+| Serviço | Valor |
+|---|---:|
+| Banho | R$ 50,00 |
+| Tosa | R$ 70,00 |
+| Tosa Higiênica | R$ 45,00 |
+
+### Serviços adicionais
+
+| Adicional | Valor |
+|---|---:|
+| Hidratação | R$ 25,00 |
+| Corte de Unhas | R$ 15,00 |
+| Perfume | R$ 10,00 |
+| Escovação de Dentes | R$ 20,00 |
+
+Os valores adicionais são somados ao preço do serviço base por meio do padrão Decorator.
+
+## Exemplos de cenários de utilização
+
+Os exemplos abaixo demonstram os valores esperados para diferentes combinações de serviços:
+
+| Serviço selecionado | Valor total |
+|---|---:|
+| Banho | R$ 50,00 |
+| Banho + Hidratação | R$ 75,00 |
+| Tosa | R$ 70,00 |
+| Tosa Higiênica + Perfume | R$ 55,00 |
+| Banho + todos os adicionais | R$ 120,00 |
+| Tosa + Hidratação + Corte de Unhas | R$ 110,00 |
+
+### Exemplo de saída de um agendamento
 
 ```text
 Agendamento {
@@ -73,59 +135,103 @@ Agendamento {
   Servico: Banho + Hidratacao
   Total: R$ 75,00
 }
-
-Agendamento {
-  Tutor: Carlos Silva ((48) 99999-1234)
-  Pet: Thor (Cachorro - Golden Retriever)
-  Data/Hora: 28/11/2026 10:30
-  Servico: Tosa
-  Total: R$ 70,00
-}
 ```
+
+*Exemplo ilustrativo de saída. Os dados são cadastrados pelo usuário durante a execução.*
 
 ## Patterns utilizados
 
 ### 1. Factory Method
-- **Problema resolvido:** desacopla a criação dos serviços concretos do restante da aplicação. Em vez de concentrar a instanciação em condicionais (`if/switch`), cada serviço possui sua própria fábrica. Para adicionar um novo serviço (como previsto na Parte 2), basta criar a nova classe que implementa `Servico` e sua respectiva subclasse de `ServicoFactory`, sem modificar o código existente.
-- **Classes envolvidas:**
-  - `Servico` (Product)
-  - `Banho`, `Tosa`, `TosaHigienica` (ConcreteProducts)
-  - `ServicoFactory` (Creator)
-  - `BanhoFactory`, `TosaFactory`, `TosaHigienicaFactory` (ConcreteCreators)
+
+**Problema resolvido:** desacopla a criação dos serviços concretos do restante da aplicação. Cada serviço possui sua própria fábrica, responsável por criar a instância correspondente.
+
+Dessa forma, a aplicação utiliza uma estrutura organizada para criar serviços, facilitando a inclusão de novos tipos sem concentrar toda a lógica de criação em um único local.
+
+**Classes envolvidas:**
+
+- `Servico` (Product)
+- `Banho`, `Tosa`, `TosaHigienica` (ConcreteProducts)
+- `ServicoFactory` (Creator)
+- `BanhoFactory`, `TosaFactory`, `TosaHigienicaFactory` (ConcreteCreators)
 
 ### 2. Decorator
-- **Problema resolvido:** permite adicionar serviços extras (adicionais) dinamicamente a qualquer serviço base sem precisar criar combinações de subclasses (como `BanhoComHidratacao`, `TosaComHidratacaoECorteDeUnhas`, etc.). Cada adicional envolve um `Servico`, acumula o preço e concatena sua descrição. Para adicionar um novo adicional na Parte 2, basta estender `AdicionalDecorator`.
-- **Classes envolvidas:**
-  - `Servico` (Component)
-  - `Banho`, `Tosa`, `TosaHigienica` (ConcreteComponents)
-  - `AdicionalDecorator` (Decorator)
-  - `HidratacaoDecorator`, `CorteUnhasDecorator`, `PerfumeDecorator`, `EscovacaoDentesDecorator` (ConcreteDecorators)
+
+**Problema resolvido:** permite adicionar serviços extras dinamicamente a qualquer serviço base, sem precisar criar diversas classes para representar todas as combinações possíveis.
+
+Cada adicional envolve um objeto `Servico`, acrescentando seu próprio valor ao preço total e complementando a descrição do serviço.
+
+**Classes envolvidas:**
+
+- `Servico` (Component)
+- `Banho`, `Tosa`, `TosaHigienica` (ConcreteComponents)
+- `AdicionalDecorator` (Decorator)
+- `HidratacaoDecorator`, `CorteUnhasDecorator`, `PerfumeDecorator`, `EscovacaoDentesDecorator` (ConcreteDecorators)
+
+## Testes realizados
+
+Foram realizados testes manuais pela interface do console, verificando:
+
+- Cadastro de tutores.
+- Cadastro de pets vinculados aos tutores.
+- Criação de agendamentos.
+- Seleção dos diferentes serviços disponíveis.
+- Aplicação de múltiplos adicionais.
+- Listagem dos agendamentos e dos cadastros.
+- Validação de campos obrigatórios.
+- Validação de telefone e data.
+- Impedimento de agendamentos duplicados para o mesmo pet, na mesma data e horário.
+- Verificação do funcionamento geral do menu.
+
+Os cenários de combinação de serviços apresentados anteriormente também servem como referência para conferir os cálculos de preços.
 
 ## Declaração de uso de IA
 
-- **Modelo utilizado:** Google Gemini
-- **Partes em que foi utilizada:** apoio na estruturação inicial do projeto, organização das classes dos padrões Factory Method e Decorator, e rascunho da documentação inicial do `README.md` na Parte 1.
+- **Modelos utilizados:** Google Gemini e ChatGPT.
+- **Partes em que foram utilizados:** apoio na estruturação inicial do projeto, organização das classes dos padrões, elaboração do desenvolvimento, implementação de validações e revisão do README.md.
+
+A utilização de IA ocorreu como ferramenta de apoio ao desenvolvimento, com revisão e testes do código pela equipe.
 
 ## Divisão do projeto e contribuição de cada integrante
 
 ### Integrante 1 - `Gabriel Tomé (@GabrielTME)` (Base do projeto e núcleo dos patterns)
-- Estrutura inicial do repositório (`.gitignore`, organização de pacotes e `README.md` inicial);
-- Entidades principais: `Tutor`, `Pet` e `Agendamento`;
-- Implementação do padrão **Factory Method**: `Servico`, `Banho`, `Tosa`, `ServicoFactory`, `BanhoFactory` e `TosaFactory`;
-- Implementação da base do padrão **Decorator**: `AdicionalDecorator` e `HidratacaoDecorator`;
-- Fluxo inicial de ponta a ponta em `Main.java` validando a integração entre entidades e os dois patterns.
+
+- Estrutura inicial do repositório (`.gitignore`, organização de pacotes e `README.md` inicial).
+- Entidades principais: `Tutor`, `Pet` e `Agendamento`.
+- Implementação do padrão **Factory Method**: `Servico`, `Banho`, `Tosa`, `ServicoFactory`, `BanhoFactory` e `TosaFactory`.
+- Implementação da base do padrão **Decorator**: `AdicionalDecorator` e `HidratacaoDecorator`.
+- Fluxo inicial de integração entre entidades e os dois padrões em `Main.java`.
 
 ### Integrante 2 - `Guilherme Cesarino (@GuilhermeCesarino)` (Expansão de adicionais e serviço complementar)
-- Implementar novos adicionais concretos estendendo `AdicionalDecorator` (ex.: `CorteUnhasDecorator`, `PerfumeDecorator` ou `EscovacaoDentesDecorator`);
-- Implementar mais um serviço concreto e sua factory (ex.: `TosaHigienica` e `TosaHigienicaFactory`);
-- Atualizar a lista de classes envolvidas no `README.md`.
 
-### Integrante 3 - `` (Menu interativo no console e gestão em memória)
-- Evoluir o fluxo em `Main.java` (ou classe auxiliar de console) com menu interativo via `Scanner`;
-- Manter listas em memória de tutores, pets e agendamentos;
-- Permitir cadastrar tutor/pet, escolher serviço via Factory Method, aplicar múltiplos adicionais via Decorator e listar agendamentos criados.
+- Implementação de novos adicionais concretos estendendo `AdicionalDecorator`: `CorteUnhasDecorator`, `PerfumeDecorator` e `EscovacaoDentesDecorator`.
+- Implementação do serviço `TosaHigienica` e sua respectiva factory.
+- Expansão das possibilidades de composição dos serviços utilizando Decorator.
+- Atualização da documentação das classes e dos padrões utilizados.
 
-### Integrante 4 - `` (Validações, testes de cenário e fechamento da documentação)
-- Adicionar validações básicas nos cadastros e agendamentos (ex.: campos obrigatórios e validação de horário);
-- Criar cenários de teste/demonstração validando o cálculo de preço e descrição com múltiplos decorators empilhados;
-- Revisar e finalizar o `README.md` com exemplos atualizados de uso e conferência final dos requisitos da entrega.
+### Integrante 3 -`Elison Miller (@elison4)` (Menu interativo no console e gestão em memória)
+
+- Evolução do fluxo em `Main.java` com menu interativo via `Scanner`.
+- Criação e gerenciamento das listas em memória de tutores, pets e agendamentos.
+- Implementação do cadastro de tutores e pets.
+- Implementação da criação de agendamentos com escolha de serviços via Factory Method.
+- Integração dos adicionais via Decorator, permitindo múltiplos adicionais em um mesmo serviço.
+- Implementação da listagem de agendamentos e cadastros.
+
+### Integrante 4 - `Elison Miller (@elison4)` (Validações, testes e documentação)
+
+- Implementação de validações nos cadastros e agendamentos.
+- Validação de campos obrigatórios, telefone e data/horário.
+- Verificação de conflitos de agendamento para o mesmo pet, na mesma data e horário.
+- Realização de testes manuais dos fluxos do sistema.
+- Conferência dos cálculos de preços e das descrições com múltiplos decorators.
+- Revisão e finalização do `README.md`.
+
+---
+
+**Observação:** os dados cadastrados são mantidos somente enquanto a aplicação estiver em execução. O sistema não utiliza banco de dados nem realiza persistência dos registros.
+
+## Referências
+
+- ORACLE. *Java Documentation*. Disponível em: https://docs.oracle.com/en/java/. Acesso em: 24 nov. 2026.
+- GAMMA, Erich; HELM, Richard; JOHNSON, Ralph; VLISSIDES, John. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
+- ORACLE. *The Java Tutorials*. Disponível em: https://docs.oracle.com/javase/tutorial/. Acesso em: 24 nov. 2026.
